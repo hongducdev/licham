@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Main circle background -->
+    <path
+        android:fillColor="#DA2128"
+        android:pathData="M54,28C41.85,28 32,37.85 32,50C32,62.15 41.85,72 54,72C66.15,72 76,62.15 76,50C76,37.85 66.15,28 54,28ZM54,68C44.06,68 36,59.94 36,50C36,40.06 44.06,32 54,32C63.94,32 72,40.06 72,50C72,59.94 63.94,68 54,68Z"/>
+    
+    <!-- Inner circle with gradient -->
+    <path
+        android:fillColor="#DA2128"
+        android:fillAlpha="0.2"
+        android:pathData="M54,32C44.06,32 36,40.06 36,50C36,59.94 44.06,68 54,68C63.94,68 72,59.94 72,50C72,40.06 63.94,32 54,32ZM54,64C46.27,64 40,57.73 40,50C40,42.27 46.27,36 54,36C61.73,36 68,42.27 68,50C68,57.73 61.73,64 54,64Z"/>
+    
+    <!-- Moon crescent -->
+    <path
+        android:fillColor="#DA2128"
+        android:pathData="M54,36C46.27,36 40,42.27 40,50C40,57.73 46.27,64 54,64C51.79,64 44,57.73 44,50C44,42.27 51.79,36 54,36Z"/>
+</vector> 

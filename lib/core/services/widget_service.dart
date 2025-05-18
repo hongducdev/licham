@@ -1,8 +1,10 @@
 import 'package:home_widget/home_widget.dart';
 import 'package:licham/core/models/lunar_date.dart';
+import 'package:flutter/services.dart';
 
 class WidgetService {
   static const String _appWidgetProvider = 'LunarCalendarWidgetProvider';
+  static const platform = MethodChannel('com.example.licham/icon');
 
   static Future<void> updateWidget(LunarDate lunarDate) async {
     try {
@@ -22,6 +24,16 @@ class WidgetService {
         name: _appWidgetProvider,
         androidName: _appWidgetProvider,
       );
+
+      // Update app icon
+      try {
+        await platform.invokeMethod('updateIcon', {
+          'lunarDay': lunarDate.lunarDay.toString(),
+          'lunarMonth': lunarDate.lunarMonth.toString(),
+        });
+      } catch (e) {
+        print('Error updating icon: $e');
+      }
     } catch (e) {
       print('Error updating widget: $e');
     }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="94dp"
+    android:height="94dp"
+    android:viewportWidth="94"
+    android:viewportHeight="94">
+    
+    <!-- Sample Day Number -->
+    <path
+        android:fillColor="#DA2128"
+        android:pathData="M30,40 L64,40 L64,60 L30,60 Z"
+        android:strokeWidth="2"
+        android:strokeColor="#DA2128" />
+    
+    <!-- Sample Month Text -->
+    <path
+        android:fillColor="#2D3250"
+        android:pathData="M25,70 L69,70 L69,80 L25,80 Z"
+        android:strokeWidth="1"
+        android:strokeColor="#2D3250" />
+</vector> 
