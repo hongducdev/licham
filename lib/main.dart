@@ -5,10 +5,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:licham/features/calendar/presentation/screens/calendar_screen.dart';
 import 'package:licham/core/theme/app_theme.dart';
+import 'package:licham/widgets/lunar_calendar_widget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('vi_VN', null);
+
+  // Initialize and start widget updates
+  await LunarCalendarWidget.updateWidget();
+  LunarCalendarWidget.startPeriodicUpdate();
 
   runApp(
     const ProviderScope(
