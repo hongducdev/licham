@@ -4,54 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="8dp"
     android:gravity="center"
     android:background="@drawable/widget_background">
 
-    <!-- Solar Date Section -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- Day of Month -->
+    <TextView
+        android:id="@+id/solar_day"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:textSize="72sp"
+        android:lineHeight="72sp"
+        android:textColor="#DA2128"
+        android:textStyle="bold"
+        android:fontFamily="@font/be_vietnam_pro"/>
 
-        <!-- Day of Month -->
-        <TextView
-            android:id="@+id/solar_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="36sp"
-            android:textColor="#DA2128"
-            android:textStyle="bold"/>
+    <!-- Month and Year -->
+    <TextView
+        android:id="@+id/solar_month_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textColor="#2D3250"
+        android:fontFamily="@font/be_vietnam_pro"
+        android:fontWeight="700"/>
 
-        <!-- Month and Year -->
-        <TextView
-            android:id="@+id/solar_month_year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="#2D3250"
-            android:layout_marginTop="-4dp"/>
-    </LinearLayout>
-
-    <!-- Lunar Date Section -->
+    <!-- Lunar Date -->
     <TextView
         android:id="@+id/lunar_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:textColor="#2D3250"
-        android:alpha="0.8"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Note Section -->
-    <TextView
-        android:id="@+id/note"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="13sp"
-        android:textColor="#DA2128"
         android:layout_marginTop="4dp"
-        android:gravity="center"/>
+        android:fontFamily="@font/be_vietnam_pro"/>
 
 </LinearLayout> 

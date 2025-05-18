@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:vnlunar/vnlunar.dart' as vn;
 import 'package:licham/core/models/lunar_date.dart';
 import 'package:licham/core/utils/lunar_calculator.dart';
+import 'package:licham/core/services/widget_service.dart';
 
 part 'lunar_calendar_provider.g.dart';
 
@@ -26,7 +27,7 @@ class LunarCalendar extends _$LunarCalendar {
     final hoangDaoHours = LunarCalculator.getHoangDao(date);
     final dayMeaning = LunarCalculator.getDayMeaning(date);
 
-    state = LunarDate(
+    final lunarDate = LunarDate(
       lunarDay: lunarInfo[0],
       lunarMonth: lunarInfo[1],
       lunarYear: lunarInfo[2],
@@ -42,5 +43,10 @@ class LunarCalendar extends _$LunarCalendar {
       hoangDao: hoangDaoHours,
       dayMeaning: dayMeaning,
     );
+
+    state = lunarDate;
+
+    // Update widget
+    WidgetService.updateWidget(lunarDate);
   }
 }

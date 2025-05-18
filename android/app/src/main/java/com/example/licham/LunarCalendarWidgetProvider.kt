@@ -8,6 +8,24 @@ import android.app.PendingIntent
 import android.content.Intent
 
 class LunarCalendarWidgetProvider : AppWidgetProvider() {
+    private fun getMonthInVietnamese(month: Int): String {
+        return when (month) {
+            1 -> "Một"
+            2 -> "Hai"
+            3 -> "Ba"
+            4 -> "Bốn"
+            5 -> "Năm"
+            6 -> "Sáu"
+            7 -> "Bảy"
+            8 -> "Tám"
+            9 -> "Chín"
+            10 -> "Mười"
+            11 -> "Mười Một"
+            12 -> "Mười Hai"
+            else -> month.toString()
+        }
+    }
+
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
@@ -33,7 +51,8 @@ class LunarCalendarWidgetProvider : AppWidgetProvider() {
                 val solarParts = solarDate.split("/").takeIf { it.size == 3 }
                 if (solarParts != null) {
                     views.setTextViewText(R.id.solar_day, solarParts[0])
-                    views.setTextViewText(R.id.solar_month_year, "Tháng ${solarParts[1]}, ${solarParts[2]}")
+                    val monthInText = getMonthInVietnamese(solarParts[1].toInt())
+                    views.setTextViewText(R.id.solar_month_year, "Tháng ${monthInText}")
                 } else {
                     views.setTextViewText(R.id.solar_day, "...")
                     views.setTextViewText(R.id.solar_month_year, "...")
@@ -43,13 +62,18 @@ class LunarCalendarWidgetProvider : AppWidgetProvider() {
                 views.setTextViewText(R.id.solar_month_year, "...")
             }
 
-            // Get lunar date
-            val lunarDate = widgetData.getString("lunar_date", "...") ?: "..."
-            views.setTextViewText(R.id.lunar_date, lunarDate)
-
-            // Get note
-            val note = widgetData.getString("note", "") ?: ""
-            views.setTextViewText(R.id.note, note)
+            // Get lunar date components
+            val lunarDay = widgetData.getString("lunar_day", "") ?: ""
+            val lunarMonth = widgetData.getString("lunar_month", "") ?: ""
+            val lunarYear = widgetData.getString("lunar_year", "") ?: ""
+            val lunarYearName = widgetData.getString("lunar_year_name", "") ?: ""
+            
+            // Format lunar date as "AL: DD-MM Năm"
+            if (lunarDay.isNotEmpty() && lunarMonth.isNotEmpty() && lunarYearName.isNotEmpty()) {
+                views.setTextViewText(R.id.lunar_date, "AL: $lunarDay-$lunarMonth $lunarYearName")
+            } else {
+                views.setTextViewText(R.id.lunar_date, "...")
+            }
 
             // Update widget
             appWidgetManager.updateAppWidget(appWidgetId, views)
