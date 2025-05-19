@@ -7,6 +7,7 @@ import 'package:licham/features/calendar/application/calendar_provider.dart';
 import 'package:licham/features/calendar/application/event_provider.dart';
 import 'package:licham/features/calendar/application/holiday_provider.dart';
 import 'package:licham/features/calendar/domain/lunar_date.dart';
+import 'package:licham/features/calendar/domain/vietnamese_calendar_utils.dart';
 import 'package:licham/features/calendar/presentation/dialogs/add_event_dialog.dart';
 import 'package:licham/features/calendar/presentation/widgets/day_details_bottom_sheet.dart';
 
@@ -331,14 +332,25 @@ class CalendarPage extends ConsumerWidget {
     final calendarState = ref.watch(calendarStateProvider);
     showModalBottomSheet(
       context: context,
-      showDragHandle: true,
       isScrollControlled: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Colors.transparent,
       builder: (context) => DayDetailsBottomSheet(
         solarDate: calendarState.selectedDay,
         lunarDate: calendarState.lunarDate,
         jd: calendarState.lunarDate.jd,
-      ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0),
+        allHolidays: [
+          ...VietnameseCalendarUtils.getHolidays(
+            calendarState.lunarDate.day,
+            calendarState.lunarDate.month,
+            isLunar: true,
+          ),
+          ...VietnameseCalendarUtils.getHolidays(
+            calendarState.selectedDay.day,
+            calendarState.selectedDay.month,
+          ),
+        ],
+        note: null, // TODO: Add note functionality
+      ),
     );
   }
 

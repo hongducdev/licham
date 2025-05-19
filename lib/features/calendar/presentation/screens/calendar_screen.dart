@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:licham/features/calendar/providers/lunar_calendar_provider.dart';
 import 'package:licham/features/reminder/models/reminder.dart';
 import 'package:licham/features/reminder/providers/reminder_provider.dart';
 import 'package:licham/features/reminder/presentation/dialogs/reminder_dialog.dart';
 import 'package:licham/core/providers/holiday_provider.dart';
+import 'package:licham/features/calendar/domain/vietnamese_calendar_utils.dart';
 
 class CalendarScreen extends ConsumerStatefulWidget {
   const CalendarScreen({super.key});
@@ -283,80 +285,70 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Solar Date Header
                     Row(
                       children: [
-                        Icon(
-                          Icons.calendar_today,
-                          color: theme.colorScheme.primary,
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                '${_selectedDay!.day}',
+                                style: GoogleFonts.montserrat(
+                                  textStyle:
+                                      theme.textTheme.headlineMedium?.copyWith(
+                                    color: theme.colorScheme.onPrimary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                'Tháng ${_selectedDay!.month}',
+                                style: GoogleFonts.montserrat(
+                                  textStyle:
+                                      theme.textTheme.bodyMedium?.copyWith(
+                                    color: theme.colorScheme.onPrimary,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Ngày ${_selectedDay!.day} tháng ${_selectedDay!.month} năm ${_selectedDay!.year}',
-                          style: theme.textTheme.titleMedium,
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                VietnameseCalendarUtils.getWeekdayName(
+                                    int.parse(lunarDate.jd.toString())),
+                                style: GoogleFonts.montserrat(
+                                  textStyle:
+                                      theme.textTheme.titleLarge?.copyWith(
+                                    color: theme.colorScheme.primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                '${_selectedDay!.year}',
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.brightness_4,
-                            color: theme.colorScheme.primary,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              'Ngày ${lunarDate.lunarDay} tháng ${lunarDate.lunarMonth} '
-                              'năm ${lunarDate.lunarYear} ${lunarDate.isLeapMonth ? '(Nhuận)' : ''}',
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _buildInfoRow(
-                      theme,
-                      Icons.access_time,
-                      'Can Chi',
-                      lunarDate.fullCanChi,
-                    ),
-                    const SizedBox(height: 8),
-                    _buildInfoRow(
-                      theme,
-                      Icons.wb_sunny,
-                      'Tiết khí',
-                      lunarDate.tiet,
-                    ),
-                    const SizedBox(height: 8),
-                    _buildInfoRow(
-                      theme,
-                      Icons.schedule,
-                      'Giờ Hoàng Đạo',
-                      lunarDate.hoangDaoString,
-                    ),
-                    const SizedBox(height: 8),
-                    _buildInfoRow(
-                      theme,
-                      lunarDate.isHoangDao
-                          ? Icons.sentiment_very_satisfied
-                          : Icons.sentiment_very_dissatisfied,
-                      'Ý nghĩa',
-                      lunarDate.dayMeaning,
-                      textColor: lunarDate.isHoangDao
-                          ? theme.colorScheme.tertiary
-                          : theme.colorScheme.error,
-                    ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 20),
+
+                    // Holidays Section
                     Consumer(
                       builder: (context, ref, child) {
                         final holidays = ref
@@ -364,63 +356,193 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                             .getHolidaysForDate(_selectedDay!);
                         if (holidays.isEmpty) return const SizedBox.shrink();
 
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Ngày lễ',
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.w500,
+                        return Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.errorContainer
+                                .withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.celebration_outlined,
+                                    color: theme.colorScheme.error,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Ngày lễ',
+                                    style:
+                                        theme.textTheme.titleMedium?.copyWith(
+                                      color: theme.colorScheme.error,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            ...holidays.map(
-                              (holiday) => Padding(
-                                padding: const EdgeInsets.only(bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.celebration,
-                                      color: theme.colorScheme.primary,
-                                      size: 16,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: Text(
-                                        holiday.name,
-                                        style: theme.textTheme.bodyMedium
-                                            ?.copyWith(
-                                          color: theme.colorScheme.primary,
-                                        ),
-                                      ),
-                                    ),
-                                    if (holiday.isLunar)
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 2,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: theme.colorScheme.primary
-                                              .withOpacity(0.1),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
+                              const SizedBox(height: 8),
+                              ...holidays.map(
+                                (holiday) => Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 28, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
                                         child: Text(
-                                          'Âm lịch',
-                                          style: theme.textTheme.bodySmall
+                                          '• ${holiday.name}',
+                                          style: theme.textTheme.bodyMedium
                                               ?.copyWith(
-                                            color: theme.colorScheme.primary,
+                                            color: theme
+                                                .colorScheme.onErrorContainer,
                                           ),
                                         ),
                                       ),
-                                  ],
+                                      if (holiday.isLunar)
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 2,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: theme.colorScheme.error
+                                                .withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          child: Text(
+                                            'Âm lịch',
+                                            style: theme.textTheme.bodySmall
+                                                ?.copyWith(
+                                              color: theme.colorScheme.error,
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         );
                       },
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Lunar Date Info
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color:
+                            theme.colorScheme.primaryContainer.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.brightness_4,
+                                color: theme.colorScheme.primary,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Âm lịch',
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  color: theme.colorScheme.primary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 28),
+                            child: Text(
+                              'Ngày ${lunarDate.lunarDay} tháng ${lunarDate.lunarMonth} '
+                              'năm ${lunarDate.lunarYear} ${lunarDate.isLeapMonth ? '(Nhuận)' : ''}',
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                color: theme.colorScheme.onPrimaryContainer,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 28),
+                            child: Text(
+                              lunarDate.fullCanChi,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onPrimaryContainer,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Additional Info Section
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.secondaryContainer
+                            .withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.info_outline,
+                                color: theme.colorScheme.secondary,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Thông tin thêm',
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  color: theme.colorScheme.secondary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          _buildInfoRow(
+                            theme,
+                            Icons.wb_sunny,
+                            'Tiết khí',
+                            lunarDate.tiet,
+                          ),
+                          const SizedBox(height: 8),
+                          _buildInfoRow(
+                            theme,
+                            Icons.schedule,
+                            'Giờ Hoàng Đạo',
+                            lunarDate.hoangDaoString,
+                          ),
+                          const SizedBox(height: 8),
+                          _buildInfoRow(
+                            theme,
+                            lunarDate.isHoangDao
+                                ? Icons.sentiment_very_satisfied
+                                : Icons.sentiment_very_dissatisfied,
+                            'Ý nghĩa',
+                            lunarDate.dayMeaning,
+                            textColor: lunarDate.isHoangDao
+                                ? theme.colorScheme.tertiary
+                                : theme.colorScheme.error,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

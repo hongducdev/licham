@@ -93,6 +93,7 @@ class VietnameseCalendarConstants {
     'solar': [
       {'d': 1, 'm': 1, 'name': 'Tết Dương lịch'},
       {'d': 9, 'm': 1, 'name': 'Ngày Học sinh - Sinh viên Việt Nam'},
+      {'d': 14, 'm': 2, 'name': 'Ngày Lễ tình nhân'},
       {'d': 3, 'm': 2, 'name': 'Ngày thành lập Đảng Cộng sản Việt Nam'},
       {'d': 27, 'm': 2, 'name': 'Ngày Thầy thuốc Việt Nam'},
       {'d': 8, 'm': 3, 'name': 'Ngày Quốc tế Phụ nữ'},
@@ -101,26 +102,27 @@ class VietnameseCalendarConstants {
         'm': 3,
         'name': 'Ngày thành lập Đoàn Thanh niên Cộng sản Hồ Chí Minh'
       },
-      {'d': 30, 'm': 4, 'name': 'Ngày Thống nhất đất nước'},
+      {'d': 30, 'm': 4, 'name': 'Ngày Giải phóng miền Nam'},
       {'d': 1, 'm': 5, 'name': 'Ngày Quốc tế Lao động'},
       {'d': 19, 'm': 5, 'name': 'Ngày sinh của Chủ tịch Hồ Chí Minh'},
       {'d': 1, 'm': 6, 'name': 'Ngày Quốc tế Thiếu nhi'},
       {'d': 27, 'm': 7, 'name': 'Ngày Thương binh Liệt sĩ'},
       {'d': 19, 'm': 8, 'name': 'Ngày Cách mạng tháng Tám thành công'},
       {'d': 2, 'm': 9, 'name': 'Ngày Quốc khánh'},
+      {'d': 10, 'm': 10, 'name': 'Ngày Giải phóng Thủ đô'},
+      {'d': 20, 'm': 10, 'name': 'Ngày Phụ nữ Việt Nam'},
       {'d': 20, 'm': 11, 'name': 'Ngày Nhà giáo Việt Nam'},
       {'d': 22, 'm': 12, 'name': 'Ngày thành lập Quân đội Nhân dân Việt Nam'},
-      {'d': 24, 'm': 12, 'name': 'Ngày Lễ Giáng Sinh'}
+      {'d': 25, 'm': 12, 'name': 'Lễ Giáng sinh'}
     ],
     'lunar': [
       {'d': 1, 'm': 1, 'name': 'Tết Nguyên Đán'},
-      {'d': 15, 'm': 1, 'name': 'Tết Nguyên tiêu'},
+      {'d': 15, 'm': 1, 'name': 'Tết Thượng nguyên'}, // còn gọi là Nguyên tiêu
       {'d': 3, 'm': 3, 'name': 'Tết Hàn thực'},
       {'d': 10, 'm': 3, 'name': 'Giỗ Tổ Hùng Vương'},
-      {'d': 15, 'm': 4, 'name': 'Lễ Phật Đản'},
       {'d': 5, 'm': 5, 'name': 'Tết Đoan ngọ'},
-      {'d': 15, 'm': 7, 'name': 'Vu Lan'},
-      {'d': 15, 'm': 8, 'name': 'Tết Trung thu'},
+      {'d': 15, 'm': 7, 'name': 'Lễ Vu lan'}, // còn gọi là Tết Hạ nguyên
+      {'d': 15, 'm': 8, 'name': 'Tết Trung thu'}, // cũng là Tết Trung nguyên
       {'d': 23, 'm': 12, 'name': 'Ông Táo chầu trời'}
     ]
   };
