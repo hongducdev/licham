@@ -116,11 +116,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 calendarStyle: CalendarStyle(
                   selectedDecoration: BoxDecoration(
                     color: theme.colorScheme.primary,
-                    shape: BoxShape.circle,
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   todayDecoration: BoxDecoration(
                     color: theme.colorScheme.secondary.withOpacity(0.5),
-                    shape: BoxShape.circle,
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   weekendTextStyle: TextStyle(
                     color: theme.colorScheme.primary,
@@ -130,75 +130,232 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                   ),
                   markerDecoration: BoxDecoration(
                     color: theme.colorScheme.primary,
-                    shape: BoxShape.circle,
+                    borderRadius: BorderRadius.circular(8),
                   ),
+                  cellMargin: const EdgeInsets.all(2),
+                  cellPadding: EdgeInsets.zero,
                 ),
                 calendarBuilders: CalendarBuilders(
                   defaultBuilder: (context, day, focusedDay) {
                     final isHoliday =
                         ref.watch(holidayListProvider.notifier).isHoliday(day);
-                    if (!isHoliday) return null;
+                    final lunarDate = ref
+                        .read(lunarCalendarProvider.notifier)
+                        .getLunarDateForDay(day);
+
+                    if (!isHoliday) {
+                      return Container(
+                        width: 42,
+                        height: 42,
+                        margin: const EdgeInsets.all(2),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${day.day}',
+                              style: TextStyle(
+                                color: theme.colorScheme.onSurface,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                              ),
+                            ),
+                            if (lunarDate != null)
+                              Text(
+                                lunarDate.lunarDay == 1
+                                    ? '${lunarDate.lunarDay}/${lunarDate.lunarMonth}'
+                                    : '${lunarDate.lunarDay}',
+                                style: TextStyle(
+                                  color: theme.colorScheme.onSurface
+                                      .withOpacity(0.7),
+                                  fontSize: 9,
+                                ),
+                              ),
+                          ],
+                        ),
+                      );
+                    }
 
                     return Container(
-                      margin: const EdgeInsets.all(4),
+                      width: 42,
+                      height: 42,
+                      margin: const EdgeInsets.all(2),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '${day.day}',
-                          style: TextStyle(
-                            color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            theme.colorScheme.primary.withOpacity(0.2),
+                            theme.colorScheme.primary.withOpacity(0.1),
+                          ],
                         ),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: theme.colorScheme.primary.withOpacity(0.3),
+                          width: 1,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${day.day}',
+                            style: TextStyle(
+                              color: theme.colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          if (lunarDate != null)
+                            Text(
+                              lunarDate.lunarDay == 1
+                                  ? '${lunarDate.lunarDay}/${lunarDate.lunarMonth}'
+                                  : '${lunarDate.lunarDay}',
+                              style: TextStyle(
+                                color:
+                                    theme.colorScheme.primary.withOpacity(0.8),
+                                fontSize: 9,
+                              ),
+                            ),
+                        ],
                       ),
                     );
                   },
                   selectedBuilder: (context, day, focusedDay) {
+                    final lunarDate = ref
+                        .read(lunarCalendarProvider.notifier)
+                        .getLunarDateForDay(day);
+                    final isHoliday =
+                        ref.watch(holidayListProvider.notifier).isHoliday(day);
+
                     return Container(
-                      margin: const EdgeInsets.all(4),
+                      width: 42,
+                      height: 42,
+                      margin: const EdgeInsets.all(2),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '${day.day}',
-                          style: TextStyle(
-                            color: theme.colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: isHoliday
+                              ? [
+                                  theme.colorScheme.primary,
+                                  theme.colorScheme.primary.withOpacity(0.8),
+                                ]
+                              : [
+                                  theme.colorScheme.primary,
+                                  theme.colorScheme.primary,
+                                ],
                         ),
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: theme.colorScheme.primary.withOpacity(0.3),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${day.day}',
+                            style: TextStyle(
+                              color: theme.colorScheme.onPrimary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          if (lunarDate != null)
+                            Text(
+                              lunarDate.lunarDay == 1
+                                  ? '${lunarDate.lunarDay}/${lunarDate.lunarMonth}'
+                                  : '${lunarDate.lunarDay}',
+                              style: TextStyle(
+                                color: theme.colorScheme.onPrimary
+                                    .withOpacity(0.8),
+                                fontSize: 9,
+                              ),
+                            ),
+                        ],
                       ),
                     );
                   },
                   todayBuilder: (context, day, focusedDay) {
                     final isHoliday =
                         ref.watch(holidayListProvider.notifier).isHoliday(day);
+                    final lunarDate = ref
+                        .read(lunarCalendarProvider.notifier)
+                        .getLunarDateForDay(day);
+
                     return Container(
-                      margin: const EdgeInsets.all(4),
+                      width: 42,
+                      height: 42,
+                      margin: const EdgeInsets.all(2),
                       decoration: BoxDecoration(
-                        color: isHoliday
-                            ? theme.colorScheme.primary.withOpacity(0.2)
-                            : theme.colorScheme.secondary.withOpacity(0.2),
-                        border: Border.all(
-                          color: theme.colorScheme.primary,
-                          width: 1,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: isHoliday
+                              ? [
+                                  theme.colorScheme.primary.withOpacity(0.3),
+                                  theme.colorScheme.primary.withOpacity(0.2),
+                                ]
+                              : [
+                                  theme.colorScheme.secondary.withOpacity(0.3),
+                                  theme.colorScheme.secondary.withOpacity(0.2),
+                                ],
                         ),
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: isHoliday
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.secondary,
+                          width: 2,
+                        ),
                       ),
-                      child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${day.day}',
+                            style: TextStyle(
+                              color: isHoliday
+                                  ? theme.colorScheme.primary
+                                  : theme.colorScheme.secondary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          if (lunarDate != null)
+                            Text(
+                              lunarDate.lunarDay == 1
+                                  ? '${lunarDate.lunarDay}/${lunarDate.lunarMonth}'
+                                  : '${lunarDate.lunarDay}',
+                              style: TextStyle(
+                                color: (isHoliday
+                                        ? theme.colorScheme.primary
+                                        : theme.colorScheme.secondary)
+                                    .withOpacity(0.8),
+                                fontSize: 9,
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
+                  },
+                  dowBuilder: (context, day) {
+                    if (day.weekday == DateTime.sunday) {
+                      return Center(
                         child: Text(
-                          '${day.day}',
+                          'CN',
                           style: TextStyle(
-                            color: theme.colorScheme.primary,
+                            color: theme.colorScheme.error,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    );
+                      );
+                    }
+                    return null;
                   },
                 ),
               ),
